@@ -25,6 +25,7 @@ Options:
 
  - 0.0.1 - Original release.
  - 0.0.2 - Bumped version number after running black and updated readme.
+ - 0.0.3 - Fixed some logic errors and duplicate work, refuses to engage with mac *.photoslibrary dirs.
 
 ## Development
 

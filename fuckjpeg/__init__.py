@@ -3,21 +3,23 @@
 import os
 from logging import Logger
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 
 def rename_file(filename: str, overwrite: bool, logger: Logger, dry_run: bool) -> bool:
     """ Renames a single file """
-    logger.debug("Starting to rename %s", filename)
+    if not filename.endswith(".jpeg"):
+        logger.debug("Filename '%s' doesn't end with .jpeg, skipping.", filename)
+        return False
+
     if ".photoslibrary" in filename:
         logger.error(
             "Refusing to rename things inside an icloud photo library, eek! (%s)",
             filename,
         )
         return False
-    if not filename.endswith(".jpeg"):
-        logger.debug("Filename doesn't end with .jpeg, skipping")
-        return False
+
+    logger.debug("Starting to rename %s", filename)
     splitfile = filename.split(".")
     newbits = splitfile[:-1]
     newbits.append("jpg")

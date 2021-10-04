@@ -39,6 +39,7 @@ from . import rename_file
     default=False,
     help="Do a dry run, don't actually make changes.",
 )
+# pylint: disable=too-many-branches
 def cli(
     path: str, overwrite: bool, recursive: bool, log_level: str, dry_run: bool
 ) -> None:
@@ -60,13 +61,27 @@ def cli(
     else:
         if recursive:
             logger.debug("Recursive mode engaged!")
-            for root, dirs, files in os.walk(path, topdown=False):
+
+            for root, _, files in os.walk(path, topdown=False):
+                if ".photoslibrary" in root:
+                    logger.error(
+                        "Refusing to rename things inside an icloud photo library, eek! (%s)",
+                        root,
+                    )
+                    continue
+
                 for name in files:
-                    rename_file(os.path.join(root, name), overwrite, logger, dry_run)
-                for name in dirs:
-                    rename_file(os.path.join(root, name), overwrite, logger, dry_run)
-        for filename in os.listdir(path):
-            rename_file(os.path.join(path, filename), overwrite, logger, dry_run)
+                    if os.path.isfile(os.path.join(root, name)):
+                        rename_file(os.path.join(root, name), overwrite, logger, dry_run)
+                    else:
+                        logger.debug("Isn't a file, skipping: %s", os.path.join(root, name))
+        else:
+            for filename in os.listdir(path):
+                filepath = os.path.join(path, filename)
+                if not os.path.isfile(filepath):
+                    logger.debug("Isn't a file, skipping: %s", filepath)
+                    continue
+                rename_file(filepath, overwrite, logger, dry_run)
 
 
 if __name__ == "__main__":
