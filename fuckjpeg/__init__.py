@@ -1,9 +1,9 @@
-""" Utility functions for fuckjpeg """
+""" Renames .jpeg files to .jpg because I really don't like that file extension. """
 
 import os
 from logging import Logger
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 
 def rename_file(filename: str, overwrite: bool, logger: Logger, dry_run: bool) -> bool:
