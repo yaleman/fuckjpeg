@@ -42,3 +42,11 @@ Home = "https://github.com/yaleman/fuckjpeg"
 
 [project.scripts]
 fuckjpeg = "fuckjpeg.__main__:cli"
+
+
+[tool.flit.sdist]
+exclude = [
+    "requirements*.txt",
+    ".gitignore",
+    ".pylintrc"
+]
