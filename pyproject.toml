@@ -12,7 +12,8 @@ classifiers = [
     "License :: OSI Approved :: MIT License"
 ]
 dynamic = [
-    "version", "description"
+    "version", 
+    "description"
 ]
 
 dependencies = [
